@@ -1,0 +1,30 @@
+# Python dependencies for Solidarity Insurance AI project
+# Generated from V03_Claims_Dashboard.py and V03_Claims_Pipeline.py
+
+# Core data processing
+pandas>=2.0.0
+
+# Web dashboard
+streamlit>=1.30.0
+
+# HTTP requests
+requests>=2.31.0
+
+# PDF processing
+pdfplumber>=0.10.3
+PyMuPDF>=1.23.8
+
+# OCR and image processing
+pytesseract>=0.3.10
+pdf2image>=1.16.3
+Pillow>=10.0.0  # PIL package
+
+# Date parsing
+python-dateutil>=2.8.2
+
+# Optional: LangChain for PDF loading (if needed)
+# langchain-community>=0.0.29
+
+# Note: Some packages may require system dependencies:
+# - pytesseract requires tesseract-ocr installed on system
+# - pdf2image requires poppler-utils installed on system
