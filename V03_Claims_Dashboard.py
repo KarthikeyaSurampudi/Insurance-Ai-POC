@@ -104,9 +104,111 @@ def run_pipeline_on_folder(zip_file):
             return
         st.success("Pipeline finished ✔️. Refresh the claim list if needed.")
 
-# ------------- UI -------------
-st.set_page_config("Insurance Claim Dashboard (V03)", layout="wide")
-st.sidebar.title("📄 Claims AI (V03)")
+# === Minimal, safe UI theming (non-functional) =================================
+AUGENT_PURPLE = "#3b0a5e"   # deep purple like augent.ai
+AUGENT_GOLD   = "#d7a442"   # warm gold accent
+BG_DARK       = "#0a0013"   # very dark background tone
+
+def _load_logo_bytes() -> bytes | None:
+    """Load Augent logo from local dir (preferred) or the mounted data path."""
+    for p in (BASE_DIR / "augentLogo_2.png", Path("/home/mrigank/projectsSSA/insuranceAi/Solidarity/assets/augentLogo_2.png")):
+        try:
+            if Path(p).exists():
+                return Path(p).read_bytes()
+        except Exception:
+            pass
+    return None
+
+logo_bytes = _load_logo_bytes()
+
+# Page config (title + favicon if logo available)
+st.set_page_config(
+    page_title="Augent's AI assisted Intelligent claims processing.",
+    page_icon=logo_bytes if logo_bytes else None,
+    layout="wide"
+)
+
+# Light CSS to mimic augent.ai palette without altering Streamlit mechanics
+st.markdown(
+    f"""
+    <style>
+      /* font */
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+      html, body, [class*="css"]  {{
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+      }}
+      /* top banner */
+      .augent-hero {{
+        background: linear-gradient(135deg, {BG_DARK} 0%, #160027 100%);
+        padding: 18px 22px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.06);
+        margin-bottom: 12px;
+      }}
+      .augent-title {{
+        color: white; 
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0;
+      }}
+      .augent-sub {{
+        color: rgba(255,255,255,0.80);
+        font-size: 0.95rem;
+        margin-top: 6px;
+      }}
+      /* accent pills / headings */
+      .augent-pill {{
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #1a0b2a;
+        background: linear-gradient(180deg, {AUGENT_GOLD}, #c59030);
+        margin-right: 8px;
+      }}
+      /* tweak Streamlit accent color safely */
+      :root {{
+        --augent-gold: {AUGENT_GOLD};
+        --augent-purple: {AUGENT_PURPLE};
+      }}
+      div.stButton > button, .stDownloadButton button, .st-emotion-cache-1vt4y43 {{
+        border-radius: 8px;
+      }}
+      div.stButton > button:hover {{
+        box-shadow: 0 0 0 3px rgba(215,164,66,0.25);
+      }}
+      /* sidebar title accent */
+      section[data-testid="stSidebar"] .st-emotion-cache-1v0mbdj, 
+      section[data-testid="stSidebar"] .stMarkdown h1, 
+      section[data-testid="stSidebar"] .stMarkdown h2 {{
+        color: {AUGENT_PURPLE};
+      }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Hero header with logo + title
+with st.container():
+    cols = st.columns([1, 6])
+    with cols[0]:
+        if logo_bytes:
+            st.image(logo_bytes, caption=None, use_container_width=True)
+    with cols[1]:
+        st.markdown(
+            f"""
+            <div class="augent-hero">
+              <div class="augent-pill">INSURANCE</div>
+              <h1 class="augent-title">Augent's AI assisted Intelligent claims processing.</h1>
+              <div class="augent-sub">Fast, accurate, and transparent claim triage and verification.</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+# ------------- UI (original functionality preserved) -------------
+st.sidebar.title("Augent - An Enterprise AI Platform")
 
 with st.sidebar.expander("➕ Ingest new claim"):
     up = st.file_uploader("Upload claim ZIP", type=["zip"])
