@@ -111,7 +111,7 @@ BG_DARK       = "#0a0013"   # very dark background tone
 
 def _load_logo_bytes() -> bytes | None:
     """Load Augent logo from local dir (preferred) or the mounted data path."""
-    for p in (BASE_DIR / "augentLogo_2.png", Path("/home/mrigank/projectsSSA/insuranceAi/Solidarity/assets/augentLogo_2.png")):
+    for p in (BASE_DIR / "augentLogo_2.png", Path("assets/augentLogo_2.png")):
         try:
             if Path(p).exists():
                 return Path(p).read_bytes()
