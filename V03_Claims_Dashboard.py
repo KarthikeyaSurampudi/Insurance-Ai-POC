@@ -2,10 +2,12 @@
 from __future__ import annotations
 import os, json, shutil, subprocess, tempfile, sys, base64
 from pathlib import Path
-
+import warnings
 import pandas as pd
 import streamlit as st
 import requests
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 BASE_DIR = Path(__file__).parent.resolve()
 PIPELINE_SCRIPT = "V03_Claims_Pipeline.py"  # pipeline entry
@@ -23,7 +25,7 @@ from urllib.parse import urlparse, parse_qs
 SECRET = os.getenv("APP_SECRET", "supersecret")
 
 def verify_token():
-    query = st.query_params()
+    query = st.experimental_get_query_params()
     token = query.get("token", [None])[0]
     if not token:
         st.error("Unauthorized")
