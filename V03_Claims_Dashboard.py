@@ -23,7 +23,7 @@ from urllib.parse import urlparse, parse_qs
 SECRET = os.getenv("APP_SECRET", "supersecret")
 
 def verify_token():
-    query = st.experimental_get_query_params()
+    query = st.query_params()
     token = query.get("token", [None])[0]
     if not token:
         st.error("Unauthorized")
