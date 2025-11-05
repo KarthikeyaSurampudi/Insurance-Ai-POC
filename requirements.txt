@@ -21,7 +21,7 @@ Pillow>=10.0.0  # PIL package
 
 # Date parsing
 python-dateutil>=2.8.2
-jwt
+PyJWT
 # Optional: LangChain for PDF loading (if needed)
 # langchain-community>=0.0.29
 
