@@ -16,6 +16,30 @@ AZURE_API_KEY  = os.getenv("AZURE_API_KEY")
 AZURE_API_VER  = os.getenv("AZURE_API_VER")
 MODEL_NAME     = os.getenv("AZURE_MODEL")
 
+import jwt
+import os
+from urllib.parse import urlparse, parse_qs
+
+SECRET = os.getenv("APP_SECRET", "supersecret")
+
+def verify_token():
+    query = st.experimental_get_query_params()
+    token = query.get("token", [None])[0]
+    if not token:
+        st.error("Unauthorized")
+        st.stop()
+
+    try:
+        data = jwt.decode(token, SECRET, algorithms=["HS256"])
+        st.session_state.user = data["user"]
+    except Exception as e:
+        st.error("Invalid or expired token")
+        st.stop()
+
+verify_token()
+st.success(f"Welcome {st.session_state.user}!")
+
+
 def llm_answer_with_context(question: str, context: str, *, max_completion_tokens: int = 3000) -> str:
     sys_prompt = (
         "You are an insurance claims assistant for Solidarity Bahrain. "
