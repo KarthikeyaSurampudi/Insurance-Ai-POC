@@ -33,8 +33,9 @@ def verify_token():
 
     try:
         data = jwt.decode(token, SECRET, algorithms=["HS256"])
-        st.session_state.user = data["user"]
+        st.session_state.user = data["username"]
     except Exception as e:
+        print(e)
         st.error("Invalid or expired token")
         st.stop()
 
