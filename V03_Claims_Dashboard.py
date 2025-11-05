@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 import requests
 
-warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore")
 
 BASE_DIR = Path(__file__).parent.resolve()
 PIPELINE_SCRIPT = "V03_Claims_Pipeline.py"  # pipeline entry
