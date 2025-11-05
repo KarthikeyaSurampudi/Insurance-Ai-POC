@@ -22,7 +22,7 @@ import jwt
 import os
 from urllib.parse import urlparse, parse_qs
 
-SECRET = os.getenv("APP_SECRET", "supersecret")
+SECRET = os.getenv("APP_SECRET", "soothsayer2025")
 
 def verify_token():
     query = st.experimental_get_query_params()
