@@ -24,25 +24,23 @@ from urllib.parse import urlparse, parse_qs
 
 SECRET = os.getenv("APP_SECRET", "soothsayer2025")
 
-def validate_user():
-    if "auth" not in st.session_state:
-        params = st.query_params
-        token = params.get("token", [None])[0]
-        if token:
-            try:
-                payload = jwt.decode(token, SECRET, algorithms=["HS256"])
-                st.session_state["auth"] = payload["user"]
-            except Exception:
-                st.error("Invalid or expired token.")
-                st.stop()
-        else:
-            st.error("Access denied. No token provided.")
-            st.stop()
-            
 
-# Only check auth once per session
-if "auth" not in st.session_state:
-    validate_user()
+def verify_token():
+    query = st.experimental_get_query_params()
+    token = query.get("token", [None])[0]
+    if not token:
+        st.error("Unauthorized")
+        st.stop()
+
+    try:
+        data = jwt.decode(token, SECRET, algorithms=["HS256"])
+        st.session_state.user = data["user"]
+    except Exception as e:
+        st.error("Invalid or expired token")
+        st.stop()
+
+verify_token()
+st.success(f"Welcome {st.session_state.user}!")
 
 
 
